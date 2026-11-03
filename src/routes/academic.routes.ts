@@ -69,8 +69,11 @@ import {
   listUsers,
   updateUser,
 } from '../controllers/user.controller'
+import { login } from '../controllers/auth.controller'
 
 const router = Router()
+
+router.post('/login', login)
 
 const registerCrudRoutes = (
   path: string,

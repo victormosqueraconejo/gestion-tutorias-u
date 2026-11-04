@@ -10,9 +10,24 @@ type CrudController = {
   remove: RequestHandler
 }
 
+export class AppError extends Error {
+  constructor(
+    message: string,
+    public readonly statusCode: number,
+  ) {
+    super(message)
+    this.name = 'AppError'
+  }
+}
+
 const handleError = (res: Response, error: unknown, action: string) => {
+  if (error instanceof AppError) {
+    res.status(error.statusCode).json({ error: error.message })
+    return
+  }
+
   if (error instanceof Error && error.name === 'ValidationError') {
-    res.status(400).json({ error: `Datos invalid al ${action}` })
+    res.status(400).json({ error: `Datos invalidos al ${action}` })
     return
   }
 
@@ -22,6 +37,7 @@ const handleError = (res: Response, error: unknown, action: string) => {
 export const createCrudController = <T>(
   entity: Model<T>,
   resourceName: string,
+  options: { beforeRemove?: (id: string) => Promise<void> } = {},
 ): CrudController => ({
   list: async (_req, res) => {
     try {
@@ -36,7 +52,7 @@ export const createCrudController = <T>(
     const { id } = req.params
 
     if (!id || !isValidObjectId(id)) {
-      res.status(400).json({ error: 'El identificador no es vvlido' })
+      res.status(400).json({ error: 'El identificador no es valido' })
       return
     }
 
@@ -67,7 +83,7 @@ export const createCrudController = <T>(
     const { id } = req.params
 
     if (!id || !isValidObjectId(id)) {
-      res.status(400).json({ error: 'El identificador no es vvlido' })
+      res.status(400).json({ error: 'El identificador no es valido' })
       return
     }
 
@@ -97,7 +113,13 @@ export const createCrudController = <T>(
     }
 
     try {
-      const entityDeleted = await entity.findByIdAndDelete(id)
+      const entityId = typeof id === 'string' ? id : id[0]
+      if (!entityId) {
+        res.status(400).json({ error: 'El identificador no es valido' })
+        return
+      }
+      await options.beforeRemove?.(entityId)
+      const entityDeleted = await entity.findByIdAndDelete(entityId)
 
       if (!entityDeleted) {
         res.status(404).json({ error: `${resourceName} no encontrado` })

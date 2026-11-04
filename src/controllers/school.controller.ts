@@ -1,5 +1,6 @@
 import School from '../models/school.model'
 import { createCrudController } from './crud.controller'
+import { ensureSchoolHasNoDependencies } from '../services/academic-integrity.service'
 
 export const {
   list: listSchools,
@@ -7,4 +8,6 @@ export const {
   create: createSchool,
   update: updateSchool,
   remove: deleteSchool,
-} = createCrudController(School, 'escuela')
+} = createCrudController(School, 'escuela', {
+  beforeRemove: ensureSchoolHasNoDependencies,
+})

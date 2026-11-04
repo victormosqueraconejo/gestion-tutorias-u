@@ -1,5 +1,6 @@
 import Topic from '../models/topic.model'
 import { createCrudController } from './crud.controller'
+import { ensureTopicHasNoDependencies } from '../services/academic-integrity.service'
 
 export const {
   list: listTopics,
@@ -7,4 +8,6 @@ export const {
   create: createTopic,
   update: updateTopic,
   remove: deleteTopic,
-} = createCrudController(Topic, 'tema')
+} = createCrudController(Topic, 'tema', {
+  beforeRemove: ensureTopicHasNoDependencies,
+})

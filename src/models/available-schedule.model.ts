@@ -7,6 +7,7 @@ const AvailableScheduleSchema = new Schema(
     fecha: { type: Date, required: true },
     hora_inicio: { type: String, required: true },
     hora_fin: { type: String, required: true },
+    dia: { type: String, required: true }, 
     modalidad_permitida: { type: String, required: true },
     estado: { type: String, required: true },
   },

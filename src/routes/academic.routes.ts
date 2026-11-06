@@ -49,6 +49,7 @@ import {
   updateTopic,
 } from '../controllers/topic.controller'
 import {
+  acceptTutoringRequest,
   createTutoringRequest,
   deleteTutoringRequest,
   getTutoringRequestById,
@@ -155,6 +156,8 @@ registerCrudRoutes('/solicitudes-tutoria', {
   update: updateTutoringRequest,
   remove: deleteTutoringRequest,
 })
+
+router.put('/solicitudes-tutoria/:id/aceptar', acceptTutoringRequest)
 
 registerCrudRoutes('/tutorias', {
   list: listTutorings,

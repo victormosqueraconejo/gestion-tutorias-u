@@ -76,7 +76,7 @@ Como estudiante, quiero buscar apoyo por escuela, materia, tema y profesor, para
 
 ### HU-13 – Consultar recursos antes de solicitar (recursos)
 
-Como estudiante, quiero ver los recursos recomendados de un tema antes de pedir una tutoría, para intentar resolver mis dudas por mi cuenta y aprovechar mejor la sesión.
+Como estudiante, quiero ver los recursos de un tema antes de pedir una tutoría, para intentar resolver mis dudas por mi cuenta y aprovechar mejor la sesión.
 
 **Criterios de aceptación:** al seleccionar un tema se listan sus recursos; desde esa vista se puede continuar a la solicitud.
 
